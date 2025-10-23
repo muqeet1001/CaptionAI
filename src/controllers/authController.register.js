@@ -15,7 +15,7 @@ async function login(req, res)  {
    const { username, password } = req.body;
    const user = await userModel.findOne({ username: username });    
     if (!user) {
-        return res.status(400).json({ message: "Invalid username or password" });
+        return res.status(400).json({ message: "Invalid username " });
     }
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
@@ -27,7 +27,6 @@ async function login(req, res)  {
     );
     res.cookie("token",token);
     return res.status(200).json({ message: "Login successful", user: user });
-    
 }
 
 async function userProfile(req, res) {
@@ -43,6 +42,8 @@ async function userProfile(req, res) {
         return res.status(401).json({ message: "Unauthorized" });
     }               
 }
+
+
 
 
 module.exports = { register, login, userProfile };
