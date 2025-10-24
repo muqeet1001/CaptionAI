@@ -1,15 +1,28 @@
 import { GoogleGenAI } from "@google/genai";
+import * as fs from "node:fs";
 
-const ai = new GoogleGenAI({
-    apiKey: "AIzaSyDYbafEd8ELnS7DRXs2RzI5abWahrpV4_s"
-});
+const ai = new GoogleGenAI({});
 
-async function main() {
+async function generateImageCaption(base64ImageFile) {
+  const contents = [
+    {
+      inlineData: {
+        mimeType: "image/jpeg",
+        data: base64ImageFile,
+      },
+    },
+    { text: "Caption this image." },
+  ];
+
   const response = await ai.models.generateContent({
-    model: "gemini-2.5-flash-lite",
-    contents: "Explain how AI works in a few words",
+    model: "gemini-2.5-flash",
+    contents: contents,
+    config:{
+          systemInstruction:"you are smart and little asthamatic . you have to generate short and crisp captions for the images provided to you . you have to be very creative while generating captions .",
+
+    }
   });
-  console.log(response.text);
+  return response.text;
 }
 
-await main();
+ export { generateImageCaption };
