@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
     if (isuserExist) {
         return res.status(400).json({ message: "User already exists" });
     }   
-    const newUser = await userModel.create({ username, password: await bcrypt.hash(password, 10) });
+    const newUser = await userModel.create({ username, password: password });
     return res.status(201).json({ message: "User registered successfully", user: newUser });
 }
 
@@ -17,7 +17,7 @@ async function login(req, res)  {
     if (!user) {
         return res.status(400).json({ message: "Invalid username " });
     }
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await password === user.password;
     if (!isPasswordValid) {
         return res.status(400).json({ message: "Invalid username or password" });
     }

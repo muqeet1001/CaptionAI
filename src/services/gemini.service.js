@@ -3,7 +3,8 @@ import * as fs from "node:fs";
 
 const ai = new GoogleGenAI({});
 
-async function generateImageCaption(base64ImageFile) {
+async function generateImageCaption(base64ImageFile, style = 'default') {
+  const styleHint = style && style !== 'default' ? ` Tone/style: ${style}.` : '';
   const contents = [
     {
       inlineData: {
@@ -18,8 +19,7 @@ async function generateImageCaption(base64ImageFile) {
     model: "gemini-2.5-flash",
     contents: contents,
     config:{
-          systemInstruction:"you are smart and little asthamatic . you have to generate short and crisp captions for the images provided to you . you have to be very creative while generating captions .",
-
+          systemInstruction:`You are a creative caption writer. Generate short, crisp, on-brand captions for the given image.${styleHint}`,
     }
   });
   return response.text;
