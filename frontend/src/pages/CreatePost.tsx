@@ -19,7 +19,6 @@ export default function CreatePost() {
   const [imageUrl, setImageUrl] = useState<string | null>(null)
   const [style, setStyle] = useState<string>('default')
   const [copied, setCopied] = useState<string | null>(null)
-  const [showPop, setShowPop] = useState(false)
 
   const guestUsed = useMemo(() => Number(localStorage.getItem('guestCaptionCount') || '0'), [])
   const [guestCount, setGuestCount] = useState(guestUsed)
@@ -40,8 +39,6 @@ export default function CreatePost() {
         const res = await api.post('/post', fd, { headers: { 'Content-Type': 'multipart/form-data' }})
         setCaption(res.data.post.caption)
         setImageUrl(res.data.post.image)
-        setShowPop(true)
-        setTimeout(() => setShowPop(false), 600)
         toast.success('Posted to your profile')
       } else {
         if (guestCount >= 2) {
@@ -55,8 +52,6 @@ export default function CreatePost() {
           creative: [allCaptions[4] || '', allCaptions[5] || '']
         })
         setImageUrl(URL.createObjectURL(file))
-        setShowPop(true)
-        setTimeout(() => setShowPop(false), 600)
         const next = guestCount + 1
         setGuestCount(next)
         localStorage.setItem('guestCaptionCount', String(next))
