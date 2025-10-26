@@ -8,6 +8,7 @@ const authRoute = require("./routes/auth.route");
 const postRoute = require("./routes/post.route");
 connectDB();
 const app = express();
+app.set('trust proxy', 1);
 
 // CORS configuration
 const allowedOrigins = [
